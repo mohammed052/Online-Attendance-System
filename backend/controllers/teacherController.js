@@ -50,63 +50,72 @@ const getStudyMaterial = async (req, res) => {
 }
 
 // mark attendance for a course
+// mark attendance for a course
 const markAttendance = async (req, res) => {
-  const { courseId } = req.params
-  let { studentIds } = req.body // Expecting an array of student IDs
+  const { courseId } = req.params;
+  let { studentIds } = req.body; // Expecting an array of student IDs
 
-  console.log('Student IDs:', studentIds) // Debugging
+  console.log("Student IDs:", studentIds); // Debugging
 
   try {
-    const course = await Course.findById(courseId)
+    const course = await Course.findById(courseId);
     if (!course) {
-      return res.status(404).json({ message: 'Course not found' })
+      return res.status(404).json({ message: "Course not found" });
     }
 
     // Ensure studentIds is always an array, even if a single student is sent
     if (!Array.isArray(studentIds)) {
-      studentIds = [studentIds]
+      studentIds = [studentIds];
     }
 
-    const today = new Date().setHours(0, 0, 0, 0) // Normalize date to remove time
+    // ✅ Fix: Correct UTC date normalization
+    const today = new Date();
+    today.setUTCHours(0, 0, 0, 0); // Normalize to UTC midnight
+
+    console.log("Corrected Today’s Date:", today.toISOString()); // Debugging
 
     for (const studentId of studentIds) {
       let studentAttendance = course.attendanceSheet.find(
         (attendance) => attendance.studentId.toString() === studentId
-      )
+      );
 
       if (studentAttendance) {
         // Check if attendance is already marked for today
-        const alreadyMarked = studentAttendance.records.some(
-          (record) => new Date(record.date).setHours(0, 0, 0, 0) === today
-        )
+        const alreadyMarked = studentAttendance.records.some((record) => {
+          const recordDate = new Date(record.date);
+          recordDate.setUTCHours(0, 0, 0, 0); // Normalize stored date to UTC
+          return recordDate.getTime() === today.getTime();
+        });
 
+        console.log("Already marked:", alreadyMarked); // Debugging
+
+        // If not already marked, push the new record
         if (!alreadyMarked) {
-          studentAttendance.records.push({ date: today, isPresent: true })
+          studentAttendance.records.push({ date: today, isPresent: true });
         }
       } else {
         // Fetch student name from User model and create a new attendance record
-        const student = await User.findById(studentId)
+        const student = await User.findById(studentId);
         if (student) {
           course.attendanceSheet.push({
             studentId,
             studentName: student.name,
             records: [{ date: today, isPresent: true }],
-          })
+          });
         }
       }
     }
 
-    await course.save()
-    res.status(200).json({ message: 'Attendance marked successfully' })
+    await course.save();
+    res.status(200).json({ message: "Attendance marked successfully" });
   } catch (error) {
-    res.status(400).json({ message: error.message })
+    res.status(400).json({ message: error.message });
   }
-}
+};
+
 
 
 // download attendance for a course
-
-
 const downloadAttendance = async (req, res) => {
   const { courseId } = req.params
 
@@ -116,52 +125,52 @@ const downloadAttendance = async (req, res) => {
       return res.status(404).json({ message: 'Course not found' })
     }
 
-    // Extracting attendance data
-    const attendanceSheet = course.attendanceSheet
+    const { attendanceSheet } = course
     if (!attendanceSheet || attendanceSheet.length === 0) {
       return res.status(400).json({ message: 'No attendance records found' })
     }
 
-    // Get all unique dates across all students
+    // Use a Set for unique dates and sort them
     const allDates = new Set()
+    const attendanceMap = new Map()
+
     attendanceSheet.forEach((student) => {
+      const studentRecords = new Map() // Store attendance as { date -> P/NP }
       student.records.forEach((record) => {
-        allDates.add(record.date.toISOString().split('T')[0]) // Format date (YYYY-MM-DD)
+        const formattedDate = record.date.toISOString().split('T')[0]
+        allDates.add(formattedDate)
+        studentRecords.set(formattedDate, record.isPresent ? 'P' : 'NP')
+      })
+      attendanceMap.set(student.studentId.toString(), {
+        name: student.studentName,
+        records: studentRecords,
       })
     })
-    const sortedDates = Array.from(allDates).sort() // Sort dates in order
 
-    // Create Excel data with headers
-    const excelData = []
-    const headers = ['Student ID', 'Student Name', ...sortedDates] // Header row
+    const sortedDates = Array.from(allDates).sort() // Sort dates in ascending order
 
-    excelData.push(headers)
+    // Construct Excel Data
+    const excelData = [['Student ID', 'Student Name', ...sortedDates]]
 
-    // Populate attendance data for each student
-    attendanceSheet.forEach((student) => {
-      const row = [student.studentId.toString(), student.studentName]
-
-      // Fill attendance for each date
+    attendanceMap.forEach((student, studentId) => {
+      const row = [studentId, student.name]
       sortedDates.forEach((date) => {
-        const record = student.records.find(
-          (r) => r.date.toISOString().split('T')[0] === date
-        )
-        row.push(record ? 'P' : 'NP') // Present or Not Present
+        row.push(student.records.get(date) || 'NP') // Default to 'NP' if no record
       })
-
       excelData.push(row)
     })
+
     console.log('Excel Data:', excelData) // Debugging
-    // Create workbook and worksheet
+
+    // Create and save Excel file
     const workbook = XLSX.utils.book_new()
     const worksheet = XLSX.utils.aoa_to_sheet(excelData)
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Attendance')
 
-    // Save the file temporarily
     const filePath = path.join(__dirname, 'attendance.xlsx')
     XLSX.writeFile(workbook, filePath)
 
-    // Send the file for download
+    // Send file for download
     res.download(filePath, 'attendance.xlsx', (err) => {
       if (err) {
         console.error('Error sending file:', err)
@@ -170,12 +179,10 @@ const downloadAttendance = async (req, res) => {
       fs.unlinkSync(filePath) // Delete temp file after sending
     })
   } catch (error) {
-    res.status(500).json({ message: error.message })
+    console.error('Error downloading attendance:', error)
+    res.status(500).json({ message: 'Internal server error' })
   }
 }
-
-module.exports = { downloadAttendance }
-
 
 
 module.exports = { 
