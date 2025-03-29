@@ -6,6 +6,9 @@ const getAllCourses = async (req, res) => {
   const studentId = req.query.studentId
   try {
     const courses = await Course.find({ students: studentId })
+    if(!courses || courses.length === 0) {
+      return res.status(404).json({ message: 'No courses found for this student' })
+    }
     res.status(200).json({ courses })
   } catch {
     res.status(400).json({ message: error.message })
@@ -41,7 +44,12 @@ const getAttendance = async (req, res) => {
     if (!attendance) {
       return res.status(404).json({ message: 'Attendance not found' })
     }
-    res.status(200).json({ attendanceRecords: attendance.records })
+    // Extract only the dates where isPresent is true
+    const presentDates = attendance.records
+      .filter((record) => record.isPresent)
+      .map((record) => record.date.toISOString().split('T')[0]) // Format: YYYY-MM-DD
+
+    res.status(200).json({ studentId, presentDates })
   } catch (error) {
     res.status(400).json({ message: error.message })
   }
