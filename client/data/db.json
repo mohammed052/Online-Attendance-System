@@ -1,0 +1,33 @@
+{
+  "courses": [
+    {
+      "id": "1",
+      "batch": "TY CE",
+      "courseName": "Software Engineering",
+      "faculty": "John Doe"
+    },
+    {
+      "id": "2",
+      "batch": "SY CE",
+      "courseName": "Operating Systems",
+      "faculty": "Jane Smith"
+    },
+    {
+      "id": "3",
+      "batch": "SY IT",
+      "courseName": "Operating Systems",
+      "faculty": "Jane Smith"
+    },
+    {
+      "id": "9df0",
+      "batch": "TY CE",
+      "courseName": "Machine Learning",
+      "faculty": "John Doe"
+    },
+    {
+      "id": "41b4",
+      "courseName": "TY CE IOT",
+      "faculty": "Dr Girish Bhole"
+    }
+  ]
+}
