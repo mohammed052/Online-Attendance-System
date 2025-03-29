@@ -78,6 +78,38 @@ const assignTeacherToCourse = async (req, res) => {
   }
 }
 
+// enroll student in course
+const enrollStudentInCourse = async (req, res) => {
+  const { courseId } = req.params
+  const { studentId } = req.body
+  try {
+    const course = await Course.findById(courseId)
+    const student = await User.findById(studentId)
+
+    if (!course) {
+      return res.status(404).json({ message: 'Course not found' })
+    }
+    if (!student) {
+      return res.status(404).json({ message: 'Student not found' })
+    }
+    // check if a student is already enrolled in the course
+    if (course.students.includes(student._id)) {
+      return res
+        .status(400)
+        .json({ message: 'Student already enrolled in this course' })
+    }
+    // enroll student in course
+    course.students.push(student._id)
+    await course.save()
+
+    res.status(200).json({
+      message: `Student ${student.name} enrolled in course ${course.title}`,
+    })
+  } catch (error) {
+    res.status(400).json({ message: error.message })
+  }
+}
+
 // get all courses
 const getAllCourses = async (req, res) => {
   try {
@@ -131,5 +163,6 @@ module.exports = {
   getAllCourses,
   getAllTeachers,
   getAllStudents,
-  deleteCourse
+  deleteCourse,
+  enrollStudentInCourse,
 }
