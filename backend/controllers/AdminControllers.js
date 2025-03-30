@@ -131,6 +131,7 @@ const getAllTeachers = async (req,res) => {
   }
 }
 
+// get all students
 const getAllStudents = async (req,res) => {
   try {
     const students = await User.find({role: 'student'})

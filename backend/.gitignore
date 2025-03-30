@@ -1,3 +1,4 @@
 node_modules/
+// including .env file
 .env
 dist/
