@@ -7,6 +7,7 @@ import Navbar from './components/Navbar'
 import AddCourses from './pages/AddCourses'
 import NotFound from './pages/NotFound'
 import AdminPage from './pages/AdminPage'
+import AdminHomePage from './pages/AdminHomePage'
 import './pages/TeacherHome.css'
 import './pages/NotFound.css'
 import './pages/LoginPage.css'
@@ -22,7 +23,8 @@ function App() {
           <Route path="/teacher" element={<TeacherHome />} />
           <Route path="/attendance/:id" element={<AttendancePage />} />
           <Route path="/add-course" element={<AddCourses />} />
-          <Route path="/admin" element={<AdminPage />} />
+          {/* <Route path="/admin" element={<AdminPage />} /> */}
+          <Route path="/admin" element={<AdminHomePage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
