@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import './App.css'
+// import './App.css'
 import LoginPage from './pages/LoginPage'
 import TeacherHome from './pages/TeacherHome'
 import AttendancePage from './pages/AttendancePage'
@@ -8,10 +8,10 @@ import AddCourses from './pages/AddCourses'
 import NotFound from './pages/NotFound'
 import AdminPage from './pages/AdminPage'
 import AdminHomePage from './pages/AdminHomePage'
-import './pages/TeacherHome.css'
-import './pages/NotFound.css'
-import './pages/LoginPage.css'
-import './components/CourseList.css'
+// import './pages/TeacherHome.css'
+// import './pages/NotFound.css'
+// import './pages/LoginPage.css'
+// import './components/CourseList.css'
 
 function App() {
   return (
