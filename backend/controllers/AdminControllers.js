@@ -114,7 +114,10 @@ const enrollStudentInCourse = async (req, res) => {
 const getAllCourses = async (req, res) => {
   try {
     const courses = await Course.find()
-    res.status(200).json({ courses })
+    // res.status(200).json({ courses })
+    // send course titles to frontend
+    const courseTitles = courses.map((course) => course.title)
+    res.status(200).json({ courses: courseTitles })
   } catch (error) {
     res.status(400).json({ message: error.message })
   }
@@ -124,7 +127,9 @@ const getAllCourses = async (req, res) => {
 const getAllTeachers = async (req,res) => {
   try {
     const teachers = await User.find({role: 'teacher'})
-    res.status(200).json({teachers})
+    // send teacher names to frontend
+    const teacherNames = teachers.map((teacher) => teacher.name)
+    res.status(200).json({teachers: teacherNames})
   }
   catch (error) {
     res.status(400).json({message: error.message})
@@ -135,7 +140,10 @@ const getAllTeachers = async (req,res) => {
 const getAllStudents = async (req,res) => {
   try {
     const students = await User.find({role: 'student'})
-    res.status(200).json({students})
+    // send student names to frontend
+    const studentNames = students.map((student) => student.name)
+    res.status(200).json({students: studentNames})
+    // res.status(200).json({students})
   }
   catch (error) {
     res.status(400).json({message: error.message})
