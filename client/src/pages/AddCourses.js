@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import './AddCourses.css'
+// import './AddCourses.css'
 
 const AddCourses = () => {
   const [batch, setBatch] = useState('')

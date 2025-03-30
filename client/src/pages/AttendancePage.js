@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
 import useFetch from '../useFetch'
-import './AttendancePage.css'
+// import './AttendancePage.css'
 
 const AttendancePage = () => {
   const { id } = useParams()

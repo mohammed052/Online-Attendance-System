@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import './AdminPage.css'
+// import './AdminPage.css'
 
 const AdminPage = () => {
   const [courseName, setCourseName] = useState('')
