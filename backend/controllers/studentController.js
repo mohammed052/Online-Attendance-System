@@ -9,7 +9,14 @@ const getAllCourses = async (req, res) => {
     if(!courses || courses.length === 0) {
       return res.status(404).json({ message: 'No courses found for this student' })
     }
-    res.status(200).json({ courses })
+    // send only course id and name to frontend
+    const courseDetails = courses.map((course) => ({
+      id: course._id,
+      title: course.title,
+    }))
+    res.status(200).json({ courses: courseDetails })
+
+    // res.status(200).json({ courses })
   } catch {
     res.status(400).json({ message: error.message })
   }

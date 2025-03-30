@@ -9,7 +9,13 @@ const getAllCourses = async (req, res) => {
     const teacherId = req.query.teacherId
     try {
         const courses = await Course.find({ teacher: teacherId })
-        res.status(200).json({ courses })
+        // send only course id and name to frontend
+        const courseDetails = courses.map((course) => ({
+            id: course._id,
+            title: course.title,
+        }))
+        res.status(200).json({ courses: courseDetails })
+        // res.status(200).json({ courses })
     } catch (error) {
         res.status(400).json({ message: error.message })
     }
@@ -21,7 +27,7 @@ const uploadMaterial = async (req, res) => {
     console.log(req.body)
     const { material } = req.body
     try {
-        console.log('Material:', material)
+        // console.log('Material:', material)
         const course = await Course.findById(courseId)
         if (!course) {
             return res.status(404).json({ message: 'Course not found' })
@@ -50,12 +56,11 @@ const getStudyMaterial = async (req, res) => {
 }
 
 // mark attendance for a course
-// mark attendance for a course
 const markAttendance = async (req, res) => {
   const { courseId } = req.params;
   let { studentIds } = req.body; // Expecting an array of student IDs
 
-  console.log("Student IDs:", studentIds); // Debugging
+  // console.log("Student IDs:", studentIds); // Debugging
 
   try {
     const course = await Course.findById(courseId);
@@ -68,7 +73,7 @@ const markAttendance = async (req, res) => {
       studentIds = [studentIds];
     }
 
-    // ✅ Fix: Correct UTC date normalization
+    // UTC date normalization
     const today = new Date();
     today.setUTCHours(0, 0, 0, 0); // Normalize to UTC midnight
 
