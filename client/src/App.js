@@ -6,12 +6,10 @@ import AttendancePage from './pages/AttendancePage'
 import Navbar from './components/Navbar'
 import AddCourses from './pages/AddCourses'
 import NotFound from './pages/NotFound'
-import AdminPage from './pages/AdminPage'
 import AdminHomePage from './pages/AdminHomePage'
-// import './pages/TeacherHome.css'
-// import './pages/NotFound.css'
-// import './pages/LoginPage.css'
-// import './components/CourseList.css'
+import AddTeacher from './pages/AddTeacher'
+import AddStudent from './pages/AddStudent'
+
 
 function App() {
   return (
@@ -22,9 +20,10 @@ function App() {
           <Route path="/" element={<LoginPage />} />
           <Route path="/teacher" element={<TeacherHome />} />
           <Route path="/attendance/:id" element={<AttendancePage />} />
-          <Route path="/add-course" element={<AddCourses />} />
-          {/* <Route path="/admin" element={<AdminPage />} /> */}
           <Route path="/admin" element={<AdminHomePage />} />
+          <Route path="/admin/add-course" element={<AddCourses />} />
+          <Route path="/admin/add-teacher" element={<AddTeacher />} />
+          <Route path="/admin/add-student" element={<AddStudent />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
