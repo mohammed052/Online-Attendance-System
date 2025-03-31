@@ -20,7 +20,7 @@ const CourseList = ({ courses }) => {
           style={{ display: 'flex', alignItems: 'center', margin: '10px 0' }}
         >
           <Link
-            to={`/attendance/${course._id}`}
+            to={`/course/${course._id}`}
             style={{ textDecoration: 'none', color: 'inherit' }}
           >
             <span style={{ marginRight: '20px' }}>{course.title}</span>

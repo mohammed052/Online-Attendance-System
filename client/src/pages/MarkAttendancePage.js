@@ -1,15 +1,14 @@
 import React, { useState, useRef } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
 import useFetch from '../useFetch'
-// import './AttendancePage.css'
 
-const AttendancePage = () => {
+const MarkAttendance = () => {
   const { id } = useParams()
   const {
     data: course,
     error,
     isLoading,
-  } = useFetch('http://localhost:8000/courses/' + id)
+  } = useFetch('api/course/' + id)
   const navigate = useNavigate()
 
   const HandleDelete = () => {
@@ -67,28 +66,6 @@ const AttendancePage = () => {
     }
   }
 
-  const [materials, setMaterials] = useState([])
-  const [materialFile, setMaterialFile] = useState(null)
-
-  const handleMaterialUpload = (event) => {
-    const file = event.target.files[0]
-    if (file) {
-      setMaterialFile(file)
-    }
-  }
-
-  const uploadMaterial = () => {
-    if (materialFile) {
-      const newMaterial = {
-        id: Date.now(),
-        name: materialFile.name,
-        url: URL.createObjectURL(materialFile),
-      }
-      setMaterials([...materials, newMaterial])
-      setMaterialFile(null)
-    }
-  }
-
   return (
     <div className="attendance-page container">
       <div>
@@ -97,9 +74,10 @@ const AttendancePage = () => {
         {course && (
           <div>
             <h2>
-              <span>
+              {/* <span>
                 {course.batch} - {course.courseName}
-              </span>
+              </span> */}
+                <span>{course.title}</span>
             </h2>
           </div>
         )}
@@ -143,22 +121,6 @@ const AttendancePage = () => {
         )}
         <canvas ref={canvasRef} style={{ display: 'none' }}></canvas>
       </div>
-      <div className="material-section">
-        <h3>Upload Course Material</h3>
-        <input type="file" onChange={handleMaterialUpload} className="input" />
-        <button onClick={uploadMaterial} className="button">
-          Upload Material
-        </button>
-        <div className="material-list">
-          {materials.map((material) => (
-            <div key={material.id} className="material-item">
-              <a href={material.url} download>
-                {material.name}
-              </a>
-            </div>
-          ))}
-        </div>
-      </div>
       <Link to="/teacher" className="button button-secondary">
         Back
       </Link>
@@ -169,4 +131,4 @@ const AttendancePage = () => {
   )
 }
 
-export default AttendancePage
+export default MarkAttendance
