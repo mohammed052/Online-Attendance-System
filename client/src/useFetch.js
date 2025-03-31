@@ -8,8 +8,6 @@ const useFetch = (url) => {
   useEffect(() => {
     const abortCont = new AbortController()
 
-    // const timer = 
-    // setTimeout(() => {
       fetch(url, { signal: abortCont.signal })
         .then((res) => {
           // console.log(res)

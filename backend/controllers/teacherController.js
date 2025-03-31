@@ -49,7 +49,14 @@ const getStudyMaterial = async (req, res) => {
         if (!course) {
             return res.status(404).json({ message: 'Course not found' })
         }
-        res.status(200).json({ studyMaterials: course.studyMaterials })
+        const studyMaterials = course.studyMaterials.filter(
+          (material) => material !== null
+        )
+        // res.status(200).json({ studyMaterials })
+        res.status(200).json({
+          courseTitle : course.title,
+          studyMaterials : studyMaterials,
+        })
     } catch (error) {
         res.status(400).json({ message: error.message })
     }
