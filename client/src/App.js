@@ -11,7 +11,7 @@ import AddStudent from './pages/AddStudent'
 import CoursePage from './pages/CoursePage'
 import MarkAttendance from './pages/MarkAttendancePage'
 import UploadStudyMaterial from './pages/UploadStudyMaterial'
-
+import StudentHomePage from './pages/StudentHomePage'
 
 function App() {
   return (
@@ -28,6 +28,7 @@ function App() {
           <Route path="/course/:id" element={<CoursePage />} />
           <Route path="/teacher/mark-attendance/:id" element={<MarkAttendance />} />
           <Route path="/teacher/upload-material/:id" element={<UploadStudyMaterial />} />
+          <Route path="/student/:studentId" element={<StudentHomePage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
