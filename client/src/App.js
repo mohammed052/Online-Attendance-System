@@ -12,6 +12,7 @@ import CoursePage from './pages/CoursePage'
 import MarkAttendance from './pages/MarkAttendancePage'
 import UploadStudyMaterial from './pages/UploadStudyMaterial'
 import StudentHomePage from './pages/StudentHomePage'
+import './index.css'
 
 function App() {
   return (
