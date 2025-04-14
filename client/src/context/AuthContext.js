@@ -1,17 +1,12 @@
-// src/context/AuthContext.js
 import { createContext, useState, useEffect, useContext } from 'react'
-import { useNavigate } from 'react-router-dom'
 
 // Create context
 const AuthContext = createContext()
 
-// Provider Component
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null) // You can set more user info here
+  const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
-  const navigate = useNavigate()
 
-  // Check localStorage for token on app load
   useEffect(() => {
     const token = localStorage.getItem('token')
     const userInfo = JSON.parse(localStorage.getItem('user'))
@@ -21,20 +16,18 @@ export const AuthProvider = ({ children }) => {
     setLoading(false)
   }, [])
 
-  // Login function
-  const login = async (token, userInfo) => {
+  const login = (token, userInfo) => {
     localStorage.setItem('token', token)
     localStorage.setItem('user', JSON.stringify(userInfo))
     setUser(userInfo)
-    navigate('/dashboard') // or any other route
+    // Don't navigate here
   }
 
-  // Logout function
   const logout = () => {
     localStorage.removeItem('token')
     localStorage.removeItem('user')
     setUser(null)
-    navigate('/login')
+    // Navigation handled elsewhere
   }
 
   return (
@@ -46,5 +39,4 @@ export const AuthProvider = ({ children }) => {
   )
 }
 
-// Custom hook
 export const useAuth = () => useContext(AuthContext)
