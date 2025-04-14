@@ -1,52 +1,79 @@
-import {useState} from 'react'
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
 
 function LoginPage() {
-     const [inputs, setInputs] = useState({})
+  const [inputs, setInputs] = useState({
+    role: 'student',
+    email: '',
+    password: '',
+  })
+  const [error, setError] = useState(null)
 
-     const handleChange = (event) => {
-       const name = event.target.name
-       const value = event.target.value
-       setInputs((values) => ({ ...values, [name]: value }))
-     }
+  const navigate = useNavigate()
+  const { login } = useAuth()
 
-     const handleSubmit = (event) => {
-       event.preventDefault()
-       alert(inputs)
-     }
-     
-    return (
-      <div>
-        <h2> Login Page</h2>
-        <form>
-          <select name='role' value={inputs.role || '' } onChange={handleChange}>
-            <option value="teacher">Teacher</option>
-            <option value="student">Student</option>
-            <option value="admin">Admin</option>
-          </select>
-          <label>
-            Enter your mail:
-            <input
-              type='text'
-              name="mail"
-              value={inputs.mail || ''}
-              onChange={handleChange}
-            />
-          </label>
-          <label>
-            Password:
-            <input
-              type="text"
-              name="pass"
-              value={inputs.pass || ''}
-              onChange={handleChange}
-            />
-          </label>
-          <input type="submit" 
-          onClick={handleSubmit}
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    setInputs((prev) => ({ ...prev, [name]: value }))
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    try {
+      const res = await fetch('/api/user/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(inputs),
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.message)
+
+      login(data.token, data) // Save to context + localStorage
+
+      // Redirect based on role
+      if (data.role === 'admin') navigate('/admin')
+      else if (data.role === 'teacher') navigate('/teacher')
+      else navigate('/student')
+    } catch (err) {
+      setError(err.message)
+    }
+  }
+
+  return (
+    <div>
+      <h2>Login Page</h2>
+      <form onSubmit={handleSubmit}>
+        <select name="role" value={inputs.role} onChange={handleChange}>
+          <option value="admin">Admin</option>
+          <option value="teacher">Teacher</option>
+          <option value="student">Student</option>
+        </select>
+        <label>
+          Email:
+          <input
+            type="email"
+            name="email"
+            value={inputs.email}
+            onChange={handleChange}
+            required
           />
-        </form>
-      </div>
-    )
+        </label>
+        <label>
+          Password:
+          <input
+            type="password"
+            name="password"
+            value={inputs.password}
+            onChange={handleChange}
+            required
+          />
+        </label>
+        <button type="submit">Login</button>
+        {error && <p style={{ color: 'red' }}>{error}</p>}
+      </form>
+    </div>
+  )
 }
 
 export default LoginPage

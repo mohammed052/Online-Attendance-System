@@ -1,7 +1,8 @@
 const express = require('express')
 const { createCourse, addTeacher, addStudent,
    assignTeacherToCourse, getAllCourses, getAllStudents,
-  getAllTeachers, deleteCourse, enrollStudentInCourse } = require('../controllers/AdminControllers')
+  getAllTeachers, deleteCourse, enrollStudentInCourse,
+  deleteStudent, deleteTeacher } = require('../controllers/AdminControllers')
 
 router = express.Router()
 
@@ -22,5 +23,9 @@ router.get('/teachers', getAllTeachers)
 router.get('/students', getAllStudents)
 
 router.delete('/delete-course/:courseId', deleteCourse)
+
+router.delete('/delete-student/:studentId', deleteStudent)
+
+router.delete('/delete-teacher/:teacherId', deleteTeacher)
 
 module.exports = router

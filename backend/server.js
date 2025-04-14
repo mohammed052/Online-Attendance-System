@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 adminRoutes = require('./routes/adminRoutes');
 teacherRoutes = require('./routes/teacherRoutes');  
 studentRoutes = require('./routes/studentRoutes');
+const userRoutes = require('./routes/userRoutes')
 const express = require('express');
 
 
@@ -23,6 +24,7 @@ app.use((req, res, next) => {
 app.use('/api/admin/', adminRoutes);
 app.use('/api/teacher/', teacherRoutes);
 app.use('/api/student/', studentRoutes);
+app.use('/api/user/login',userRoutes);
 
 // database connection
 const dbURI = process.env.DB_URI;

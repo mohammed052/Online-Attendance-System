@@ -1,5 +1,7 @@
 const User = require('../models/userModel')
 const Course = require('../models/courseModel')
+const jwt = require('jsonwebtoken')
+const dotenv = require('dotenv')
 
 // create course
 const createCourse = async (req, res) => {
@@ -14,32 +16,55 @@ const createCourse = async (req, res) => {
 
 // add teacher to database
 const addTeacher = async (req, res) => {
+  console.log(req.body)
   const { name, email, password } = req.body
   try {
-    const teacher = await User.create({
+    const teacher = await User.signup(
       name,
       email,
       password,
-      role: 'teacher',
+      'teacher'
+    )
+    const token = jwt.sign(
+      { id: teacher._id, role: teacher.role },
+      process.env.JWT_SECRET,
+      { expiresIn: '1d' }
+    )
+
+    res.status(200).json({
+      name: teacher.name,
+      email: teacher.email,
+      role: teacher.role,
+      token,
     })
-    res.status(200).json({ teacher })
   } catch (error) {
+    console.log(error.message)
     res.status(400).json({ message: error.message })
   }
 }
 
 // add student to database  
 const addStudent = async (req, res) => {
-  console.log(req.body)
+  // console.log(req.body)
   const { name, email, password } = req.body
   try {
-    const student = await User.create({
+    const student = await User.signup(
       name,
       email,
       password,
-      role: 'student',
+      'student'
+    )
+    const token = jwt.sign(
+      { id: student._id, role: student.role },
+      process.env.JWT_SECRET,
+      { expiresIn: '1d' }
+    )
+    res.status(200).json({
+      name: student.name,
+      email: student.email,
+      role: student.role,
+      token,
     })
-    res.status(200).json({ student })
   } catch (error) {
     res.status(400).json({ message: error.message })
   }
@@ -164,6 +189,36 @@ const deleteCourse = async (req, res) => {
   }
 }
 
+// delete student
+const deleteStudent = async (req, res) => {
+  const { studentId } = req.params
+  try {
+    const student = await User.findByIdAndDelete(studentId)
+    if (!student) {
+      return res.status(404).json({ message: 'Student not found' })
+    }
+    res.status(200).json({ message: `Student ${student.name} deleted succesfully` })
+  }
+  catch (error) {
+    res.status(400).json({ message: error.message })
+  }
+}
+
+// delete teacher
+const deleteTeacher = async (req, res) => {
+  const { teacherId } = req.params
+  try {
+    const teacher = await User.findByIdAndDelete(teacherId)
+    if (!teacher) {
+      return res.status(404).json({ message: 'Teacher not found' })
+    }
+    res.status(200).json({ message: `Teacher ${teacher.name} deleted succesfully` })  
+  }
+  catch(error) {
+    res.status(400).json({ message: error.message })
+  }
+}
+
 module.exports = {
   createCourse,
   addTeacher,
@@ -174,4 +229,5 @@ module.exports = {
   getAllStudents,
   deleteCourse,
   enrollStudentInCourse,
+  deleteStudent, deleteTeacher
 }

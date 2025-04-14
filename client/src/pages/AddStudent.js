@@ -1,27 +1,41 @@
+// src/pages/AddStudent.jsx
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-export const AddStudent = () => {
+const AddStudent = () => {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState(null)
+
   const navigate = useNavigate()
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     const student = { name, email, password }
     setIsLoading(true)
 
-    fetch('/api/admin/add-student', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(student),
-    }).then(() => {
-      console.log('New student added')
+    try {
+      const res = await fetch('/api/admin/add-student', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: JSON.stringify(student),
+      })
+
+      const data = await res.json()
+
+      if (!res.ok) throw new Error(data.message)
+
       setIsLoading(false)
       navigate('/admin')
-    })
+    } catch (err) {
+      setIsLoading(false)
+      setError(err.message)
+    }
   }
 
   return (
@@ -31,7 +45,6 @@ export const AddStudent = () => {
         <label>Enter Name</label>
         <input
           type="text"
-          className="input"
           required
           value={name}
           onChange={(e) => setName(e.target.value)}
@@ -39,7 +52,6 @@ export const AddStudent = () => {
         <label>Enter Email</label>
         <input
           type="email"
-          className="input"
           required
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -47,17 +59,16 @@ export const AddStudent = () => {
         <label>Enter Password</label>
         <input
           type="password"
-          className="input"
           required
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        {isLoading && (
-          <button className="button" disabled>
-            Adding New Student..
-          </button>
+        {isLoading ? (
+          <button disabled>Adding Student...</button>
+        ) : (
+          <button>Add Student</button>
         )}
-        {!isLoading && <button className="button">Add Student</button>}
+        {error && <p style={{ color: 'red' }}>{error}</p>}
       </form>
     </div>
   )
