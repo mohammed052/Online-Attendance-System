@@ -1,13 +1,33 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 const AddCourses = () => {
   const [courseTitle, setCourseTitle] = useState('')
-  const [facultyEmail, setFacultyEmail] = useState('')
+  const [teachers, setTeachers] = useState([])
+  const [selectedTeacherId, setSelectedTeacherId] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(null)
 
   const navigate = useNavigate()
+
+  useEffect(() => {
+    const fetchTeachers = async () => {
+      try {
+        const res = await fetch('/api/admin/teachers', {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        })
+        const data = await res.json()
+        if (!res.ok) throw new Error(data.message || 'Failed to load teachers')
+        setTeachers(data.teachers)
+      } catch (err) {
+        setError(err.message)
+      }
+    }
+
+    fetchTeachers()
+  }, [])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -16,7 +36,7 @@ const AddCourses = () => {
 
     const course = {
       title: courseTitle,
-      facultyEmail: facultyEmail.trim().toLowerCase(),
+      teacherId: selectedTeacherId,
     }
 
     try {
@@ -98,13 +118,12 @@ const AddCourses = () => {
             color: '#444',
           }}
         >
-          Assign Faculty (Enter Faculty Email)
+          Assign Faculty
         </label>
-        <input
-          type="email"
+        <select
           required
-          value={facultyEmail}
-          onChange={(e) => setFacultyEmail(e.target.value)}
+          value={selectedTeacherId}
+          onChange={(e) => setSelectedTeacherId(e.target.value)}
           style={{
             padding: '10px 14px',
             border: '1px solid #ccc',
@@ -114,7 +133,16 @@ const AddCourses = () => {
             marginBottom: '12px',
             boxSizing: 'border-box',
           }}
-        />
+        >
+          <option value="" disabled>
+            -- Select Faculty --
+          </option>
+          {teachers.map((teacher) => (
+            <option key={teacher._id} value={teacher._id}>
+              {teacher.name}
+            </option>
+          ))}
+        </select>
 
         {isLoading ? (
           <button

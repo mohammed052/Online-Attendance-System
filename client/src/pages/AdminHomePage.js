@@ -25,15 +25,15 @@ const AdminHomePage = () => {
       <h2>Teachers</h2>
       <ul>
         {teachers &&
-          teachers.teachers.map((name, index) => <li key={index}>{name}</li>)}
+          teachers.teachers.map((teacher) => (
+            <li key={teacher.id}>{teacher.name}</li>
+          ))}
       </ul>
 
       <h2>Students</h2>
       <ul>
-        {
-          students &&
-          students.students.map((name, index) => <li key={index}>{name}</li>)
-        }
+        {students &&
+          students.students.map((name, index) => <li key={index}>{name}</li>)}
       </ul>
     </div>
   )
