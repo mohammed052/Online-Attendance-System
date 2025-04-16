@@ -70,6 +70,32 @@ const addStudent = async (req, res) => {
   }
 }
 
+// add admin
+const addAdmin = async (req, res) => {
+  const { name, email, password } = req.body
+  try {
+    const admin = await User.signup(
+      name,
+      email,
+      password,
+      'admin'
+    )
+    const token = jwt.sign(
+      { id: admin._id, role: admin.role },
+      process.env.JWT_SECRET,
+      { expiresIn: '1d' }
+    )
+    res.status(200).json({
+      name: admin.name,
+      email: admin.email,
+      role: admin.role,
+      token,
+    })
+  } catch (error) {
+    res.status(400).json({ message: error.message })
+  }
+}
+
 //assing techer to course
 const assignTeacherToCourse = async (req, res) => {
   const { courseId } = req.params
@@ -223,6 +249,7 @@ module.exports = {
   createCourse,
   addTeacher,
   addStudent,
+  addAdmin,
   assignTeacherToCourse,
   getAllCourses,
   getAllTeachers,

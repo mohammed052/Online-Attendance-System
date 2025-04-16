@@ -104,52 +104,80 @@ code {
   color: white;
 }
 
-/* LoginPage */
-.login-page {
+/* Form Container - shared by login, add student, add teacher */
+.form-container {
+  max-width: 500px;
+  margin: 50px auto;
+  padding: 30px 40px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   text-align: center;
-  padding: 20px;
 }
 
-.login-page h2 {
-  margin-bottom: 20px;
+.form-container h2 {
+  margin-bottom: 24px;
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
 }
 
-.login-page form {
+.form-container form {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.login-page label {
-  margin-bottom: 10px;
-  font-weight: bold;
+.form-container label {
+  margin: 12px 0 6px;
+  font-weight: 500;
+  color: #444;
 }
 
-.login-page input,
-.login-page select {
-  padding: 10px;
-  font-size: 16px;
+.form-container input,
+.form-container select {
+  padding: 10px 14px;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 6px;
+  font-size: 16px;
   width: 100%;
   max-width: 300px;
   box-sizing: border-box;
+  transition: border-color 0.3s ease;
   margin-bottom: 10px;
 }
 
-.login-page .button {
-  padding: 10px 20px;
-  font-size: 16px;
-  cursor: pointer;
-  border: none;
-  border-radius: 4px;
+.form-container input:focus,
+.form-container select:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.15);
+}
+
+.form-container button {
+  margin-top: 20px;
+  padding: 12px 24px;
   background-color: #007bff;
+  border: none;
   color: white;
+  font-size: 16px;
+  border-radius: 6px;
+  cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
-.login-page .button:hover {
+.form-container button:hover:not(:disabled) {
   background-color: #0056b3;
+}
+
+.form-container button:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+.form-container p {
+  margin-top: 16px;
+  font-size: 14px;
 }
 
 /* AttendancePage */
@@ -267,143 +295,18 @@ code {
   background-color: #0056b3;
 }
 
-/* index.css */
-
-.add-student.container {
-  max-width: 500px;
-  margin: 50px auto;
-  padding: 30px 40px;
-  background-color: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-}
-
-.add-student h2 {
-  text-align: center;
-  margin-bottom: 24px;
-  font-size: 24px;
-  font-weight: 600;
-  color: #333;
-}
-
-.add-student form {
+.navbar {
   display: flex;
-  flex-direction: column;
-}
-
-.add-student label {
-  margin: 12px 0 6px;
-  font-weight: 500;
-  color: #444;
-}
-
-.add-student input {
-  padding: 10px 14px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 16px;
-  transition: border-color 0.3s ease;
-}
-
-.add-student input:focus {
-  outline: none;
-  border-color: #007bff;
-  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.15);
-}
-
-.add-student button {
-  margin-top: 20px;
-  padding: 12px;
-  background-color: #007bff;
-  border: none;
+  flex-wrap: wrap; /* allow items to wrap */
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #333;
   color: white;
-  font-size: 16px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
 }
 
-.add-student button:hover:not(:disabled) {
-  background-color: #0056b3;
-}
-
-.add-student button:disabled {
-  background-color: #6c757d;
-  cursor: not-allowed;
-}
-
-.add-teacher p {
-  margin-top: 16px;
-  text-align: center;
-  font-size: 14px;
-}
-
-
-.add-teacher.container {
-  max-width: 500px;
-  margin: 50px auto;
-  padding: 30px 40px;
-  background-color: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-}
-
-.add-teacher h2 {
-  text-align: center;
-  margin-bottom: 24px;
-  font-size: 24px;
-  font-weight: 600;
-  color: #333;
-}
-
-.add-teacher form {
+.navbar-links {
   display: flex;
-  flex-direction: column;
-}
-
-.add-teacher label {
-  margin: 12px 0 6px;
-  font-weight: 500;
-  color: #444;
-}
-
-.add-teacher input {
-  padding: 10px 14px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 16px;
-  transition: border-color 0.3s ease;
-}
-
-.add-teacher input:focus {
-  outline: none;
-  border-color: #007bff;
-  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.15);
-}
-
-.add-teacher button {
-  margin-top: 20px;
-  padding: 12px;
-  background-color: #007bff;
-  border: none;
-  color: white;
-  font-size: 16px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.add-teacher button:hover:not(:disabled) {
-  background-color: #0056b3;
-}
-
-.add-teacher button:disabled {
-  background-color: #6c757d;
-  cursor: not-allowed;
-}
-
-.add-teacher p {
-  margin-top: 16px;
-  text-align: center;
-  font-size: 14px;
+  flex-wrap: wrap; /* new line if needed */
+  gap: 10px;
 }

@@ -20,7 +20,7 @@ const courseSchema = new Schema({
   teacher: {
     type: Schema.Types.ObjectId,
     ref: 'User',
-    // required: true
+    required: true
   },
   students: [
     {

@@ -39,7 +39,7 @@ const AddStudent = () => {
   }
 
   return (
-    <div className="add-student container">
+    <div className="form-container">
       <h2>Add New Student</h2>
       <form onSubmit={handleSubmit}>
         <label>Enter Name</label>

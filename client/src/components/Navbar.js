@@ -1,7 +1,16 @@
-import { React } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useContext } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext' // adjust path if needed
 
 const Navbar = () => {
+  const { logout } = useAuth() // Get user and logout function from context
+  const navigate = useNavigate()
+
+  const handleLogout = () => {
+    logout() // Call logout function from context
+    navigate('/') // redirect to login
+  }
+
   return (
     <nav className="navbar">
       <div className="navbar-brand">
@@ -14,6 +23,16 @@ const Navbar = () => {
         <Link to="/admin" className="navbar-link">
           Admin
         </Link>
+        <Link to="/" className="navbar-link">
+          Login
+        </Link>
+        <button
+          onClick={handleLogout}
+          className="navbar-link"
+          style={{ background: 'none', border: 'none', cursor: 'pointer' }}
+        >
+          Logout
+        </button>
       </div>
     </nav>
   )
