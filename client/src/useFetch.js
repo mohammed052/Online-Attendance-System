@@ -7,8 +7,15 @@ const useFetch = (url) => {
 
   useEffect(() => {
     const abortCont = new AbortController()
+    const token = localStorage.getItem('token')
 
-      fetch(url, { signal: abortCont.signal })
+      fetch(url, {
+        signal: abortCont.signal,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      })
         .then((res) => {
           // console.log(res)
           if (!res.ok) {

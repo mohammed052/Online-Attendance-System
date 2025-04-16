@@ -12,6 +12,7 @@ import CoursePage from './pages/CoursePage'
 import MarkAttendance from './pages/MarkAttendancePage'
 import UploadStudyMaterial from './pages/UploadStudyMaterial'
 import StudentHomePage from './pages/StudentHomePage'
+import PrivateRoute from './components/PrivateRoutes'
 import './index.css'
 
 function App() {
@@ -22,13 +23,47 @@ function App() {
         <Routes>
           <Route path="/" element={<LoginPage />} />
           <Route path="/teacher" element={<TeacherHome />} />
-          <Route path="/admin" element={<AdminHomePage />} />
-          <Route path="/admin/add-course" element={<AddCourses />} />
-          <Route path="/admin/add-teacher" element={<AddTeacher />} />
-          <Route path="/admin/add-student" element={<AddStudent />} />
+          <Route
+            path="/admin"
+            element={
+              <PrivateRoute requiredRole="admin">
+                <AdminHomePage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/admin/add-course"
+            element={
+              <PrivateRoute requiredRole="admin">
+                <AddCourses />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/admin/add-teacher"
+            element={
+              <PrivateRoute requiredRole="admin">
+                <AddTeacher />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/admin/add-student"
+            element={
+              <PrivateRoute requiredRole="admin">
+                <AddStudent />
+              </PrivateRoute>
+            }
+          />
           <Route path="/course/:id" element={<CoursePage />} />
-          <Route path="/teacher/mark-attendance/:id" element={<MarkAttendance />} />
-          <Route path="/teacher/upload-material/:id" element={<UploadStudyMaterial />} />
+          <Route
+            path="/teacher/mark-attendance/:id"
+            element={<MarkAttendance />}
+          />
+          <Route
+            path="/teacher/upload-material/:id"
+            element={<UploadStudyMaterial />}
+          />
           <Route path="/student/:studentId" element={<StudentHomePage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

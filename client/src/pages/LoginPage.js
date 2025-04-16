@@ -41,7 +41,7 @@ function LoginPage() {
   }
 
   return (
-    <div>
+    <div className="form-container">
       <h2>Login Page</h2>
       <form onSubmit={handleSubmit}>
         <select name="role" value={inputs.role} onChange={handleChange}>

@@ -35,7 +35,7 @@ const AddCourses = () => {
 
       console.log('New course added')
       setIsLoading(false)
-      navigate('/teacher')
+      navigate('/admin')
     } catch (err) {
       setIsLoading(false)
       setError(err.message)
@@ -44,7 +44,7 @@ const AddCourses = () => {
 
   return (
     <div
-      className="add-courses container"
+      className="form-container"
       style={{
         maxWidth: '500px',
         margin: '50px auto',

@@ -1,16 +1,21 @@
 const express = require('express')
-const { createCourse, addTeacher, addStudent,
+const { createCourse, addTeacher, addStudent, addAdmin,
    assignTeacherToCourse, getAllCourses, getAllStudents,
   getAllTeachers, deleteCourse, enrollStudentInCourse,
   deleteStudent, deleteTeacher } = require('../controllers/AdminControllers')
+const { protectAdmin } = require('../middleware/authMiddleware') 
 
 router = express.Router()
+
+router.use(protectAdmin)
 
 router.post('/create-course',createCourse)
 
 router.post('/add-teacher', addTeacher)
 
 router.post('/add-student', addStudent)
+
+router.post('/add-admin', addAdmin)
 
 router.post('/assign-teacher/:courseId', assignTeacherToCourse)
 

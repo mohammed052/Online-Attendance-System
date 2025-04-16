@@ -4,6 +4,7 @@ import useFetch from '../useFetch'
 const AdminHomePage = () => {
   const { data: courses } = useFetch('/api/admin/courses')
   const { data: teachers } = useFetch('/api/admin/teachers')
+  const { data : students} = useFetch('/api/admin/students')
 
   return (
     <div className="admin-home">
@@ -25,6 +26,14 @@ const AdminHomePage = () => {
       <ul>
         {teachers &&
           teachers.teachers.map((name, index) => <li key={index}>{name}</li>)}
+      </ul>
+
+      <h2>Students</h2>
+      <ul>
+        {
+          students &&
+          students.students.map((name, index) => <li key={index}>{name}</li>)
+        }
       </ul>
     </div>
   )
