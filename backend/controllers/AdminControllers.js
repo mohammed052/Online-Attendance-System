@@ -5,14 +5,38 @@ const dotenv = require('dotenv')
 
 // create course
 const createCourse = async (req, res) => {
-  const { title } = req.body
+  const { title, teacherId } = req.body
+
   try {
-    const course = await Course.create({ title })
-    res.status(200).json({ course })
+    // Validate inputs
+    if (!title || !teacherId) {
+      return res
+        .status(400)
+        .json({ message: 'Title and teacherId are required' })
+    }
+
+    const teacher = await User.findById(teacherId)
+
+    if (!teacher) {
+      return res.status(404).json({ message: 'Teacher not found' })
+    }
+
+    if (teacher.role !== 'teacher') {
+      return res.status(400).json({ message: 'User is not a teacher' })
+    }
+
+    const course = await Course.create({ title, teacher: teacherId })
+
+    res.status(200).json({
+      message: `Course '${title}' created and assigned to ${teacher.name}`,
+      course,
+    })
   } catch (error) {
+    console.error('Error creating course:', error)
     res.status(400).json({ message: error.message })
   }
 }
+
 
 // add teacher to database
 const addTeacher = async (req, res) => {
@@ -178,9 +202,9 @@ const getAllCourses = async (req, res) => {
 const getAllTeachers = async (req,res) => {
   try {
     const teachers = await User.find({role: 'teacher'})
-    // send teacher names to frontend
-    const teacherNames = teachers.map((teacher) => teacher.name)
-    res.status(200).json({teachers: teacherNames})
+    // send teacher names and ids
+    
+    res.status(200).json({teachers: teachers.map((teacher) => ({name: teacher.name, id: teacher._id}))})
   }
   catch (error) {
     res.status(400).json({message: error.message})
