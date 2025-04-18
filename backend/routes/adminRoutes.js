@@ -3,11 +3,11 @@ const { createCourse, addTeacher, addStudent, addAdmin,
    assignTeacherToCourse, getAllCourses, getAllStudents,
   getAllTeachers, deleteCourse, enrollStudentInCourse,
   deleteStudent, deleteTeacher } = require('../controllers/AdminControllers')
-const { protectAdmin } = require('../middleware/authMiddleware') 
+const { protectRole } = require('../middleware/authMiddleware') 
 
 router = express.Router()
 
-router.use(protectAdmin)
+router.use(protectRole('admin')) // Protect all routes with admin role
 
 router.post('/create-course',createCourse)
 

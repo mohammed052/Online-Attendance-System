@@ -38,6 +38,7 @@ const AddCourses = () => {
       title: courseTitle,
       teacherId: selectedTeacherId,
     }
+    console.log('Course:', course)
 
     try {
       const res = await fetch('/api/admin/create-course', {
@@ -138,7 +139,7 @@ const AddCourses = () => {
             -- Select Faculty --
           </option>
           {teachers.map((teacher) => (
-            <option key={teacher._id} value={teacher._id}>
+            <option key={teacher.id} value={teacher.id}>
               {teacher.name}
             </option>
           ))}

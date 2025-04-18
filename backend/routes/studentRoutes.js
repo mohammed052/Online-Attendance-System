@@ -6,8 +6,11 @@ const {
   getStudyMaterial,
   getAttendance,  
 } = require('../controllers/studentController')
+const { protectRole } = require('../middleware/authMiddleware')
 
 router = express.Router();
+
+router.use(protectRole('student')) // Protect all routes with student role
 
 router.get('/my-courses', getAllCourses);
 
