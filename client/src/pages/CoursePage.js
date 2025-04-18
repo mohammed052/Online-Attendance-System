@@ -1,10 +1,15 @@
 import { useParams } from 'react-router-dom'
 import useFetch from '../useFetch'
+import { useAuth } from '../context/AuthContext'
 
 const CoursePage = () => {
   const { id } = useParams()
+  const { user } = useAuth()
+  const  role  = user?.role || 'student' // Default to 'student' if role is not available
+
   const { data, error, isLoading } = useFetch(
-    `/api/teacher/study-material/${id}`
+    role ==='teacher' ? `/api/teacher/study-material/${id}` :
+    `/api/student/course-material/${id}`
   )
 
   const handleDownload = async () => {
@@ -14,6 +19,7 @@ const CoursePage = () => {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${user.token}`,
         },
       })
 
@@ -54,21 +60,23 @@ const CoursePage = () => {
   return (
     <div className="course-page">
       <h1>{courseTitle}</h1>
-
-      <div className="actions">
-        <a href={`/teacher/mark-attendance/${id}`} className="button">
-          Mark Attendance
-        </a>
-        <a href={`/teacher/upload-material/${id}`} className="button">
-          Upload Study Material
-        </a>
-      </div>
-      <div>
-        <button className="button" onClick={handleDownload}>
-          📥 Download Attendance
-        </button>
-      </div>
-
+      {role === 'teacher' && (
+        <>
+          <div className="actions">
+            <a href={`/teacher/mark-attendance/${id}`} className="button">
+              Mark Attendance
+            </a>
+            <a href={`/teacher/upload-material/${id}`} className="button">
+              Upload Study Material
+            </a>
+          </div>
+          <div>
+            <button className="button" onClick={handleDownload}>
+              📥 Download Attendance
+            </button>
+          </div>
+        </>
+      )}
       <h2>Study Materials</h2>
       {studyMaterials.length > 0 ? (
         <ul>
