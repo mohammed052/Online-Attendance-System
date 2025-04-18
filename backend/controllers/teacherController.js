@@ -9,12 +9,7 @@ const getAllCourses = async (req, res) => {
     const teacherId = req.user._id // Get teacher ID from the request object
     try {
         const courses = await Course.find({ teacher: teacherId })
-        // const courses = await Course.find()
-        // send only course id and name to frontend
-        // const courseDetails = courses.map((course) => ({
-        //     id: course._id,
-        //     title: course.title,
-        // }))
+  
         res.status(200).json({ courses })
         // res.status(200).json({ courses })
     } catch (error) {
