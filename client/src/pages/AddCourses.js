@@ -56,7 +56,7 @@ const AddCourses = () => {
 
       console.log('New course added')
       setIsLoading(false)
-      navigate('/admin')
+      navigate('/')
     } catch (err) {
       setIsLoading(false)
       setError(err.message)

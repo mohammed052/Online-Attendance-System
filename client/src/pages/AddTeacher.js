@@ -31,7 +31,7 @@ const AddTeacher = () => {
       if (!res.ok) throw new Error(data.message)
 
       setIsLoading(false)
-      navigate('/admin')
+      navigate('/')
     } catch (err) {
       setIsLoading(false)
       setError(err.message)

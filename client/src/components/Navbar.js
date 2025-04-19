@@ -13,17 +13,13 @@ const Navbar = () => {
 
   return (
     <nav className="navbar">
-      <div className="navbar-brand">
-        <h1 style={{ color: 'white' }}>Attendance Tracker</h1>
-      </div>
+      <Link to="/">
+        <div className="navbar-brand">
+          <h1 style={{ color: 'white' }}>Attendance Tracker</h1>
+        </div>
+      </Link>
       <div className="navbar-links">
-        <Link to="/teacher" className="navbar-link">
-          Home
-        </Link>
-        <Link to="/admin" className="navbar-link">
-          Admin
-        </Link>
-        <Link to="/" className="navbar-link">
+        <Link to="/login" className="navbar-link">
           Login
         </Link>
         <button
