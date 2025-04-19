@@ -3,7 +3,7 @@ const Course = require('../models/courseModel')
 
 // get all courses for a student
 const getAllCourses = async (req, res) => {
-  const studentId = req.query.studentId
+  const studentId = req.user._id
   try {
     const courses = await Course.find({ students: studentId })
     if(!courses || courses.length === 0) {
@@ -39,7 +39,7 @@ const getStudyMaterial = async (req, res) => {
 // get attendance for a course
 const getAttendance = async (req, res) => {
   const { courseId } = req.params
-  const studentId = req.query.studentId
+  const studentId = req.user._id
   try {
     const course = await Course.findById(courseId)
     if (!course) {
@@ -62,8 +62,37 @@ const getAttendance = async (req, res) => {
   }
 }
 
+const registerToCourse = async (req, res) => {
+  try {
+    const { inviteCode } = req.body
+    const studentId = req.user._id
+
+    const course = await Course.findOne({ inviteCode })
+    if (!course) {
+      return res.status(404).json({ message: 'Invalid invite code' })
+    }
+
+    // Optional: Check if already enrolled
+    if (course.students.includes(studentId)) {
+      return res
+        .status(400)
+        .json({ message: 'Already registered to this course' })
+    }
+
+    // Add student to course
+    course.students.push(studentId)
+    await course.save()
+
+    res.status(200).json({ message: 'Successfully registered to course' })
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ message: 'Server error' })
+  }
+}
+
 module.exports = {
   getAllCourses,
   getStudyMaterial,
   getAttendance,
+  registerToCourse,
 }

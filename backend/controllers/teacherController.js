@@ -20,15 +20,20 @@ const getAllCourses = async (req, res) => {
 // upload material for a course
 const uploadMaterial = async (req, res) => {
     const { courseId } = req.params
-    console.log(req.body)
-    const { material } = req.body
+    // console.log(req.body)
+    const { title, content } = req.body
     try {
         // console.log('Material:', material)
         const course = await Course.findById(courseId)
         if (!course) {
             return res.status(404).json({ message: 'Course not found' })
         }
-        course.studyMaterials.push(material)
+        // create a new material with title and content
+        material = { title, content}
+        // push new study material to start of studyMaterials
+        course.studyMaterials.unshift(material)
+
+        // course.studyMaterials.push(material)
         await course.save()
         res.status(200).json({ message: 'Material uploaded successfully' })
     } catch (error) {
@@ -52,6 +57,7 @@ const getStudyMaterial = async (req, res) => {
         res.status(200).json({
           courseTitle : course.title,
           studyMaterials : studyMaterials,
+          inviteCode : course.inviteCode,
         })
     } catch (error) {
         res.status(400).json({ message: error.message })

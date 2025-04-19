@@ -310,3 +310,155 @@ code {
   flex-wrap: wrap; /* new line if needed */
   gap: 10px;
 }
+
+/* ----------------------- */
+/* ✅ GENERIC STYLES */
+/* ----------------------- */
+
+/* Layout helpers */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+/* Headings */
+h1, h2, h3 {
+  color: #1a1a1a;
+  margin-bottom: 1rem;
+}
+
+h1 {
+  font-size: 2rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+}
+
+/* Button */
+.button {
+  background-color: #007bff;
+  color: white;
+  padding: 0.4rem 0.9rem; /* smaller padding */
+  font-size: 0.95rem;     /* smaller text */
+  border: none;
+  border-radius: 6px;     /* slightly smaller corners */
+  text-decoration: none;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+  display: inline-block;
+  text-align: center;
+  margin: 0.5rem 0; /* margin for spacing */
+}
+
+
+.button:hover {
+  background-color: #0056b3;
+  cursor: pointer;
+}
+
+/* Flexbox Row (Reusable for aligning buttons, actions etc.) */
+.flex-row {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* Card-like list item */
+.list-item {
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background-color: #f5f5f5;
+  border-left: 4px solid #007bff;
+  border-radius: 6px;
+}
+
+/* Basic paragraph */
+p {
+  color: #444;
+  line-height: 1.5;
+  margin: 0.2rem 0;
+}
+
+/* List reset */
+ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+/* ----------------------- */
+/* 🎯 SPECIFIC: CoursePage */
+/* ----------------------- */
+
+.course-page {
+  background-color: #fdfdfd;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+}
+
+/* Optional spacing if needed */
+.course-page h2 {
+  margin-top: 2rem;
+}
+
+.admin-page-container {
+  max-width: 800px;
+  margin: auto;
+  padding: 2rem;
+}
+
+.admin-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.admin-section {
+  margin-top: 2rem;
+}
+
+.admin-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.admin-item {
+  background: #f9f9f9;
+  padding: 0.8rem 1rem;
+  margin-bottom: 0.5rem;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.button {
+  background-color: #3f51b5;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: background 0.3s ease;
+}
+
+.button:hover {
+  background-color: #303f9f;
+}
+
+.delete-btn {
+  background-color: #e53935;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 0.3rem 0.6rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.delete-btn:hover {
+  background-color: #c62828;
+}

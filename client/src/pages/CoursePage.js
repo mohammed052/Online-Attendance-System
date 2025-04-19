@@ -53,22 +53,22 @@ const CoursePage = () => {
   }
 
   const courseTitle = data?.courseTitle || `Course ${id}`
-  const studyMaterials = (data?.studyMaterials || []).filter(
-    (material) => material !== null
-  )
+  const studyMaterials = (data?.studyMaterials || [])
+  const inviteCode = data?.inviteCode || ''
 
   return (
-    <div className="course-page">
+    <div className="course-page container">
       <h1>{courseTitle}</h1>
       {role === 'teacher' && (
         <>
-          <div className="actions">
+          <div className="flex-row">
             <a href={`/teacher/mark-attendance/${id}`} className="button">
               Mark Attendance
             </a>
             <a href={`/teacher/upload-material/${id}`} className="button">
               Upload Study Material
             </a>
+            Student Invite Code: <strong>{inviteCode}</strong>
           </div>
           <div>
             <button className="button" onClick={handleDownload}>
@@ -81,7 +81,7 @@ const CoursePage = () => {
       {studyMaterials.length > 0 ? (
         <ul>
           {studyMaterials.map((material) => (
-            <li key={material._id}>
+            <li key={material._id} className="list-item">
               <p>
                 <strong>{material.title}</strong>
               </p>

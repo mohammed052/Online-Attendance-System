@@ -1,13 +1,11 @@
 import { useParams } from 'react-router-dom'
 import useFetch from '../useFetch'
+import { useAuth } from '../context/AuthContext'
 
 const StudentHomePage = () => {
-  // Get student id from query parameters
-  const { studentId } = useParams()
-
   // Fetch courses for the student
   const { data, error, isLoading } = useFetch(
-    `/api/student/my-courses?studentId=${studentId}`
+    `/api/student/my-courses`
   )
 
   return (
