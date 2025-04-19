@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import useFetch from '../useFetch'
 import { useAuth } from '../context/AuthContext'
+import { Link } from 'react-router-dom'
 
 const StudentHomePage = () => {
   const { user } = useAuth()
@@ -79,12 +80,11 @@ const StudentHomePage = () => {
       <div className="grid gap-4">
         {data?.courses?.length > 0
           ? data.courses.map((course) => (
-              <div
-                key={course.id}
-                className="border rounded-xl p-4 shadow-md hover:shadow-lg transition duration-200"
-              >
-                <h2 className="text-lg font-medium">{course.title}</h2>
-              </div>
+              <Link to={`/course/${course.id}`} key={course.id}>
+                <div className="border rounded-xl p-4 shadow-md hover:shadow-lg transition duration-200">
+                  <h2 className="text-lg font-medium">{course.title}</h2>
+                </div>
+              </Link>
             ))
           : !isLoading && <p>No courses found.</p>}
       </div>

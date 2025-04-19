@@ -12,6 +12,8 @@ const CoursePage = () => {
     `/api/student/course-material/${id}`
   )
 
+  console.log('CoursePage data:', data)
+
   const handleDownload = async () => {
     try {
       // Fetch the attendance data from the server
