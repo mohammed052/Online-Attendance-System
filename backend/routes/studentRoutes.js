@@ -5,6 +5,7 @@ const {
   getAllCourses,
   getStudyMaterial,
   getAttendance,  
+  registerToCourse,
 } = require('../controllers/studentController')
 const { protectRole } = require('../middleware/authMiddleware')
 
@@ -18,5 +19,6 @@ router.get('/course-material/:courseId', getStudyMaterial);
 
 router.get('/attendance/:courseId', getAttendance);
 
-module.exports = router;
+router.post('/register', registerToCourse);
 
+module.exports = router;

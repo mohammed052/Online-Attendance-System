@@ -1,7 +1,11 @@
 const User = require('../models/userModel')
 const Course = require('../models/courseModel')
 const jwt = require('jsonwebtoken')
-const dotenv = require('dotenv')
+const crypto = require('crypto')
+
+const generateInviteCode = () => {
+  return crypto.randomBytes(4).toString('hex')
+}
 
 // create course
 const createCourse = async (req, res) => {
@@ -24,8 +28,8 @@ const createCourse = async (req, res) => {
     if (teacher.role !== 'teacher') {
       return res.status(400).json({ message: 'User is not a teacher' })
     }
-
-    const course = await Course.create({ title, teacher: teacherId })
+    const inviteCode = generateInviteCode()
+    const course = await Course.create({ title, teacher: teacherId, inviteCode })
 
     res.status(200).json({
       message: `Course '${title}' created and assigned to ${teacher.name}`,

@@ -17,6 +17,11 @@ const courseSchema = new Schema({
   details: {
     type: String,
   },
+  inviteCode : {
+    type: String,
+    required: true,
+    unique: true,
+  },
   teacher: {
     type: Schema.Types.ObjectId,
     ref: 'User',

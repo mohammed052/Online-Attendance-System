@@ -64,7 +64,7 @@ function App() {
             path="/teacher/upload-material/:id"
             element={<UploadStudyMaterial />}
           />
-          <Route path="/student/:studentId" element={<StudentHomePage />} />
+          <Route path="/student/" element={<StudentHomePage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>

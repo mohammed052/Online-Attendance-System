@@ -14,7 +14,7 @@ const Navbar = () => {
   return (
     <nav className="navbar">
       <div className="navbar-brand">
-        <h1>Attendance Tracker</h1>
+        <h1 style={{ color: 'white' }}>Attendance Tracker</h1>
       </div>
       <div className="navbar-links">
         <Link to="/teacher" className="navbar-link">
