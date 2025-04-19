@@ -14,62 +14,95 @@ import UploadStudyMaterial from './pages/UploadStudyMaterial'
 import StudentHomePage from './pages/StudentHomePage'
 import PrivateRoute from './components/PrivateRoutes'
 import './index.css'
+import { useAuth } from './context/AuthContext'
 
 function App() {
+  const { user } = useAuth()
+
   return (
-    <div>
-      <Router>
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<LoginPage />} />
-          <Route path="/teacher" element={<TeacherHome />} />
-          <Route
-            path="/admin"
-            element={
-              <PrivateRoute requiredRole="admin">
-                <AdminHomePage />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/admin/add-course"
-            element={
-              <PrivateRoute requiredRole="admin">
-                <AddCourses />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/admin/add-teacher"
-            element={
-              <PrivateRoute requiredRole="admin">
-                <AddTeacher />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/admin/add-student"
-            element={
-              <PrivateRoute requiredRole="admin">
-                <AddStudent />
-              </PrivateRoute>
-            }
-          />
-          <Route path="/course/:id" element={<CoursePage />} />
-          <Route
-            path="/teacher/mark-attendance/:id"
-            element={<MarkAttendance />}
-          />
-          <Route
-            path="/teacher/upload-material/:id"
-            element={<UploadStudyMaterial />}
-          />
-          <Route path="/student/" element={<StudentHomePage />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </Router>
-    </div>
+    <Router>
+      {user && <Navbar />}
+      <Routes>
+        <Route
+          path="/"
+          element={
+            !user ? (
+              <LoginPage />
+            ) : user.role === 'admin' ? (
+              <AdminHomePage />
+            ) : user.role === 'teacher' ? (
+              <TeacherHome />
+            ) : user.role === 'student' ? (
+              <StudentHomePage />
+            ) : (
+              <LoginPage />
+            )
+          }
+        />
+
+        <Route path="/login" element={<LoginPage />} />
+
+        {/* Admin Routes */}
+        <Route
+          path="/admin"
+          element={
+            <PrivateRoute requiredRole="admin">
+              <AdminHomePage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/admin/add-course"
+          element={
+            <PrivateRoute requiredRole="admin">
+              <AddCourses />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/admin/add-teacher"
+          element={
+            <PrivateRoute requiredRole="admin">
+              <AddTeacher />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/admin/add-student"
+          element={
+            <PrivateRoute requiredRole="admin">
+              <AddStudent />
+            </PrivateRoute>
+          }
+        />
+
+        {/* Teacher Routes */}
+        <Route
+          path="/teacher/mark-attendance/:id"
+          element={<MarkAttendance />}
+        />
+        <Route
+          path="/teacher/upload-material/:id"
+          element={<UploadStudyMaterial />}
+        />
+
+        {/* Student Routes */}
+        <Route
+          path="/student"
+          element={
+            <PrivateRoute requiredRole="student">
+              <StudentHomePage />
+            </PrivateRoute>
+          }
+        />
+
+        {/* Shared */}
+        <Route path="/course/:id" element={<CoursePage />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </Router>
   )
 }
+
 
 export default App

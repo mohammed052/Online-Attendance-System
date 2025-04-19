@@ -19,6 +19,6 @@ router.get('/course-material/:courseId', getStudyMaterial);
 
 router.get('/attendance/:courseId', getAttendance);
 
-router.post('/register', registerToCourse);
+router.post('/register-course', registerToCourse);
 
 module.exports = router;

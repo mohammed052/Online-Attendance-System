@@ -32,9 +32,9 @@ function LoginPage() {
       login(data.token, data) // Save to context + localStorage
 
       // Redirect based on role
-      if (data.role === 'admin') navigate('/admin')
-      else if (data.role === 'teacher') navigate('/teacher')
-      else navigate('/student')
+      if (data.role === 'admin') navigate('/')
+      else if (data.role === 'teacher') navigate('/')
+      else navigate('/')
     } catch (err) {
       setError(err.message)
     }
